@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.universalmodloader.runtime.RuntimeArchitectureTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-08-31T02:35:30" hostname="codespaces-63649b" time="0.016">
+<testsuite name="com.universalmodloader.runtime.RuntimeArchitectureTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-08-31T03:00:17" hostname="codespaces-63649b" time="0.016">
   <properties/>
-  <testcase name="shouldLoadClassMappingAndAddJarPath()" classname="com.universalmodloader.runtime.RuntimeArchitectureTest" time="0.006"/>
-  <testcase name="shouldRegisterRuntimeAndBridgeEvent()" classname="com.universalmodloader.runtime.RuntimeArchitectureTest" time="0.009"/>
+  <testcase name="shouldLoadClassMappingAndAddJarPath()" classname="com.universalmodloader.runtime.RuntimeArchitectureTest" time="0.004"/>
+  <testcase name="shouldRegisterRuntimeAndBridgeEvent()" classname="com.universalmodloader.runtime.RuntimeArchitectureTest" time="0.01"/>
   <system-out><![CDATA[[UnifiedRuntimeBootstrap] Runtime híbrido inicializado com sucesso
 ]]></system-out>
   <system-err><![CDATA[]]></system-err>
