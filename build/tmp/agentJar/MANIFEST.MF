@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Implementation-Title: UniversalModLoader-Agent
+Implementation-Version: 0.1.0
+Premain-Class: com.universalmodloader.core.JavaAgent
+Agent-Class: com.universalmodloader.core.JavaAgent
+Can-Redefine-Classes: true
+Can-Retransform-Classes: true
+

@@ -1,0 +1,37 @@
+name: Build UniversalModLoader
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Configurar Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: gradle
+
+      - name: Garantir permissões do Gradle Wrapper
+        run: chmod +x ./gradlew
+
+      - name: Compilar projeto
+        run: ./gradlew clean build
+
+      - name: Publicar artefato do build
+        uses: actions/upload-artifact@v4
+        with:
+          name: universal-mod-loader
+          path: build/libs/*.jar
+          if-no-files-found: error

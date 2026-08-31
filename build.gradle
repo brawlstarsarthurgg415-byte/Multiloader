@@ -1,0 +1,97 @@
+plugins {
+    id 'java'
+    id 'maven-publish'
+}
+
+group = 'com.universalmodloader'
+version = '0.1.0'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+dependencies {
+    // ASM: análise e transformação de bytecode 
+    implementation 'org.ow2.asm:asm:9.7'
+    implementation 'org.ow2.asm:asm-tree:9.7'
+    implementation 'org.ow2.asm:asm-commons:9.7'
+
+    // Mixin: suporte à injeção de código e patch de classes em runtime.
+    implementation 'org.spongepowered:mixin:0.8.7'
+
+    // Fabric Loader: leitura de fabric.mod.json e compatibilidade com a API do Fabric.
+    implementation 'net.fabricmc:fabric-loader:0.16.7'
+
+    // Referências de runtime para Fabric e mapeamento de classes podem ser adicionadas em um projeto
+    // mais avançado do loader, mas não são indispensáveis para a base estrutural do carregador híbrido.
+    // Aqui, o foco principal é a infraestrutura de bytecode, instrumentação JVM e descoberta de mods.
+
+    testImplementation platform('org.junit:junit-bom:5.10.2')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src/main/java']
+        }
+        resources {
+            srcDirs = ['src/main/resources']
+        }
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.release = 21
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+jar {
+    archiveBaseName = 'UniversalModLoader'
+    manifest {
+        attributes(
+            'Implementation-Title': 'UniversalModLoader',
+            'Implementation-Version': project.version,
+            'Premain-Class': 'com.universalmodloader.core.JavaAgent',
+            'Agent-Class': 'com.universalmodloader.core.JavaAgent',
+            'Can-Redefine-Classes': 'true',
+            'Can-Retransform-Classes': 'true',
+            'Can-Set-Native-Method-Prefix': 'false'
+        )
+    }
+}
+
+tasks.register('agentJar', Jar) {
+    dependsOn tasks.named('classes')
+    archiveClassifier = 'agent'
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from sourceSets.main.output
+    manifest {
+        attributes(
+            'Implementation-Title': 'UniversalModLoader-Agent',
+            'Implementation-Version': project.version,
+            'Premain-Class': 'com.universalmodloader.core.JavaAgent',
+            'Agent-Class': 'com.universalmodloader.core.JavaAgent',
+            'Can-Redefine-Classes': 'true',
+            'Can-Retransform-Classes': 'true'
+        )
+    }
+}
+
+tasks.named('assemble') {
+    dependsOn tasks.named('agentJar')
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+}

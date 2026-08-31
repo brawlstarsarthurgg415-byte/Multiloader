@@ -1,0 +1,11 @@
+{
+  "required": true,
+  "package": "com.universalmodloader.mixins",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    {
+      "config": "mixin.uml.json",
+      "class": "com.universalmodloader.mixins.MinecraftClientMixin"
+    }
+  ]
+}
