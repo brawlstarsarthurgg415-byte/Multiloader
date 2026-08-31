@@ -11,10 +11,10 @@ import java.nio.file.Path;
 import java.util.List;
 
 /**
- * Ponto de entrada principal do carregador universal.
+ * Ponto de entrada principal do launcher/loader híbrido.
  *
- * Este launcher funciona como um instalador/bootstraper do loader. Ao abrir o JAR, ele exibe uma
- * interface visual simples e prepara a estrutura de diretórios do ambiente do loader.
+ * A interface aqui é a de um launcher de Minecraft real: configuração de versão, loader,
+ * diretórios de mods/config e o botão que tenta iniciar o cliente oficial do Minecraft.
  */
 public final class Main {
 
@@ -27,13 +27,13 @@ public final class Main {
             frame.setVisible(true);
         });
 
-        System.out.println("[UniversalModLoader] Inicializando carregador híbrido...");
+        System.out.println("[UniversalModLoader] Inicializando ambiente de launcher...");
 
         if (JavaAgent.getInstrumentation() == null) {
-            System.out.println("[UniversalModLoader] Instrumentation ainda não está ativa. O agente deve ser anexado via JVM.");
+            System.out.println("[UniversalModLoader] Instrumentation não está anexada, como esperado em um launcher simples.");
         }
 
-        ModScanner scanner = new ModScanner(Path.of("mods"));
+        ModScanner scanner = new ModScanner(Path.of(System.getProperty("user.home"), "UniversalModLoader", "UniversalModLoader", "mods"));
         try {
             List<ModScanner.ModDescriptor> mods = scanner.scan();
             for (ModScanner.ModDescriptor mod : mods) {
@@ -48,7 +48,6 @@ public final class Main {
 
         fabricAdapter.initialize();
         forgeAdapter.initialize();
-
         fabricAdapter.onEvent("ClientLifecycleEvents.CLIENT_STARTED", null);
         forgeAdapter.onEvent("PlayerJoinEvent", null);
     }
