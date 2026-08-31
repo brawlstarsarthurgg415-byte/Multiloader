@@ -4,17 +4,17 @@ import com.universalmodloader.api.fabric.FabricAPIAdapter;
 import com.universalmodloader.api.forge.ForgeAPIAdapter;
 import com.universalmodloader.core.JavaAgent;
 import com.universalmodloader.discovery.ModScanner;
+import com.universalmodloader.installer.InstallerFrame;
 
+import javax.swing.SwingUtilities;
 import java.nio.file.Path;
 import java.util.List;
 
 /**
  * Ponto de entrada principal do carregador universal.
  *
- * Esta classe funciona como o núcleo principal de bootstrap do loader. É o lugar ideal para:
- *  - descobrir mods na pasta /mods
- *  - instanciar adapters de Fabric e Forge
- *  - registrar transformers e sincronizar o ambiente com a JVM
+ * Este launcher funciona como um instalador/bootstraper do loader. Ao abrir o JAR, ele exibe uma
+ * interface visual simples e prepara a estrutura de diretórios do ambiente do loader.
  */
 public final class Main {
 
@@ -22,11 +22,13 @@ public final class Main {
     }
 
     public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            InstallerFrame frame = new InstallerFrame();
+            frame.setVisible(true);
+        });
+
         System.out.println("[UniversalModLoader] Inicializando carregador híbrido...");
 
-        // Inicializa o Java Agent se necessário. Em uma execução tradicional fora do ambiente de JVM
-        // instrumentada, o agente pode não estar registrado, por isso o código abaixo oferece logging
-        // e inicialização local do contexto de instrumentação.
         if (JavaAgent.getInstrumentation() == null) {
             System.out.println("[UniversalModLoader] Instrumentation ainda não está ativa. O agente deve ser anexado via JVM.");
         }

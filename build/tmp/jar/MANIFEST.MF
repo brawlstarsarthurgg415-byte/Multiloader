@@ -1,6 +1,7 @@
 Manifest-Version: 1.0
 Implementation-Title: UniversalModLoader
 Implementation-Version: 0.1.0
+Main-Class: com.universalmodloader.Main
 Premain-Class: com.universalmodloader.core.JavaAgent
 Agent-Class: com.universalmodloader.core.JavaAgent
 Can-Redefine-Classes: true
